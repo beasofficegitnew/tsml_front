@@ -1,0 +1,341 @@
+<!DOCTYPE HTML>
+<html lang="en">
+   <body>
+      <app-header></app-header>
+      <div class="page-content">
+         <section class="prof-head">
+            <div class="container">
+               <h2>View profile</h2>
+            </div>
+         </section>
+         <section class="prof-form">
+            <div class="container">
+               <div class="prof-form-bdy">
+                  <div class="row">
+                     <div class="col-12 col-lg-4">
+                        <div class="customer-box">
+                           <div class="customer-box-head">Customer Information</div>
+                           <div class="customer-box-body">
+                              <div class="view-txt">
+                                 <p>
+                                    <b>Company Name</b>
+                                    <span class="d-block">{{customer_information.name}}</span>
+                                 </p>
+                                 <div class="">
+                                    <div class="form-group">
+                                      <div class="d-flex2 display-f">
+                                      <input type="text" maxlength="10" [readOnly]="updateMobile" (keyup)="mobilNumCheck($event)" [(ngModel)]="custPhoneNo" id="mobilNo"  class="form-control" />
+                                      <button type="button" [disabled]="validMobile || updateMobile" class="btn blue-btn" (click)="getOtp(customer_information.email)">
+                                            Get OTP
+                                          </button>
+                                      </div>
+                                      
+                                      <div *ngIf="validMobile">
+                                       <small class="text-danger">Please, Enter 10 digit mobile number.</small>
+                                     </div>
+                                       <br>
+                                      <!-- Otp -->
+                                      <div class="d-flex2 display-f" *ngIf="updateMobile">
+                                       <input type="number" maxlength="6" [(ngModel)]="receviedOtp" id="mobilNo"  class="form-control" />
+                                       <button type="button" class="btn blue-btn" (click)="onUpdateMob(customer_information.email)">
+                                             Verify
+                                           </button>
+                                       </div>
+                                       <div class="">
+                                          <a routerLink="/auth/reset-password" class="smll-font pointer">Reset Password?</a>
+                                       </div>
+                                    </div>
+                                  </div>
+                                 <p>
+                                    <b>Email</b>
+                                    <span class="d-block">{{customer_information.email}}</span>
+                                 </p>
+                              </div>
+                              <!-- <div class="row" *ngIf="updateMobile">
+                                 <div class="col-lg-12" (click)="onUpdateMob();">
+                                    <a class="btn btn-primary"><i class="fa fa-paper-plane"></i> Update Mobile No</a>&nbsp;
+                                 </div>
+                              </div> -->
+                           </div>
+                        </div>
+                     </div>
+                     <!--/-->
+                     <div class="col-12 col-lg-4">
+                        <div class="customer-box">
+                           <div class="customer-box-head">Customer e-KYC</div>
+                           <div class="customer-box-body">
+                              <div class="view-txt">
+                                 <p>
+                                    <b>GST Number</b>
+                                    <span class="d-block">{{customer_kyc.company_gst}}</span>
+                                 </p>
+                                 <p>
+                                    <b>Pan Number</b>
+                                    <span class="d-block">{{customer_kyc.company_pan}}</span>
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!--/-->
+                  </div>
+                  <hr/>
+                  <div class="row mt-2">
+                     <div class="col-12">
+                        <div id="accordion" class="accordion">
+                           <div class="card mb-0">
+                              <div class="card-header" data-toggle="collapse" href="#collapseOne">
+                                 <a class="card-title">
+                                 Shipping Address
+                                 </a>
+                              </div>
+                              <div id="collapseOne" class="card-body collapse show" data-parent="#accordion" >
+                                 <div class="row">
+                                    <div class="col-12 col-lg-4" *ngFor="let item of shipping_address; let i = index">
+                                       <div class="customer-box">
+                                          <div class="customer-box-head">Address {{i+1}}</div>
+                                          <div class="customer-box-body">
+                                             <div class="view-txt">
+                                                <p>
+                                                   <b>Company Name</b>
+                                                   <span class="d-block">{{item.first_name}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>Gstin</b>
+                                                   <span class="d-block">{{item.gstin}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>Address Line1</b>
+                                                   <span class="d-block">{{item.addressone}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>Address Line2</b>
+                                                   <span class="d-block">{{item.addresstwo}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>City</b>
+                                                   <span class="d-block">{{item.city}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>State</b>
+                                                   <span class="d-block">{{item.state}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>Pincode</b>
+                                                   <span class="d-block">{{item.pincode}}</span>
+                                                </p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!--/-->
+                                  
+                                 </div>
+                              </div>
+                              <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                 <a class="card-title">
+                                 Billing Address 
+                                 </a>
+                              </div>
+                              <div id="collapseTwo" class="card-body collapse" data-parent="#accordion">
+                                 <div class="row">
+                                    <div class="col-12 col-lg-4" *ngFor="let item of billing_address; let i = index">
+                                       <div class="customer-box">
+                                          <div class="customer-box-head">Address {{i+1}}</div>
+                                          <div class="customer-box-body">
+                                             <div class="view-txt">
+                                                <p>
+                                                   <b>Company Name</b>
+                                                   <span class="d-block">{{item.first_name}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>Gstin</b>
+                                                   <span class="d-block">{{item.gstin}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>Address Line1</b>
+                                                   <span class="d-block">{{item.addressone}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>Address Line2</b>
+                                                   <span class="d-block">{{item.addresstwo}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>City</b>
+                                                   <span class="d-block">{{item.city}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>State</b>
+                                                   <span class="d-block">{{item.state}}</span>
+                                                </p>
+                                                <p>
+                                                   <b>Pincode</b>
+                                                   <span class="d-block">{{item.pincode}}</span>
+                                                </p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!--/-->
+                                    <!-- <div class="col-12 col-lg-4">
+                                       <div class="customer-box">
+                                          <div class="customer-box-head">Address 2</div>
+                                          <div class="customer-box-body">
+                                             <div class="view-txt">
+                                                <p>
+                                                   <b>First Name</b>
+                                                   <span class="d-block">Text Here</span>
+                                                </p>
+                                                <p>
+                                                   <b>Last Name</b>
+                                                   <span class="d-block">Text Here</span>
+                                                </p>
+                                                <p>
+                                                   <b>Address Line1</b>
+                                                   <span class="d-block">Text Here</span>
+                                                </p>
+                                                <p>
+                                                   <b>Address Line2</b>
+                                                   <span class="d-block">Text Here</span>
+                                                </p>
+                                                <p>
+                                                   <b>City</b>
+                                                   <span class="d-block">Text Here</span>
+                                                </p>
+                                                <p>
+                                                   <b>State</b>
+                                                   <span class="d-block">Text Here</span>
+                                                </p>
+                                                <p>
+                                                   <b>Pincode</b>
+                                                   <span class="d-block">Text Here</span>
+                                                </p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div> -->
+                                    <!--/-->
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!--/-->
+                  <Hr/>
+                  <div class="row mt-2">
+                     <div class="col-lg-12">
+                        <div class="prof-form-head">
+                           Preferred Product
+                        </div>
+                     </div>
+                     <div class="col-lg-12">
+                        <div class="cart-table">
+                           <div class="table-responsive">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th>Product Details</th>
+                                       <th>Category</th>
+                                       <th>Subcategory</th>
+                                       <th>Size</th>
+                                       <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>
+                                          <div class="product">
+                                             <figure class="product-media">
+                                                <a href="#">
+                                                <img src="assets/images/cart1.png" alt="Product image">
+                                                </a>
+                                             </figure>
+                                          </div>
+                                       </td>
+                                       <td>
+                                          <div class="product">
+                                             <div class="cart-details">
+                                                <h3 class="product-title">
+                                                   <a href="#">High Carbon Ferro Chrome</a>
+                                                </h3>
+                                             </div>
+                                          </div>
+                                       </td>
+                                       <td>High Carbon Ferro Chrome - High Phos</td>
+                                       <td>10-150 mm</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                     <div class="col-lg-12">
+                        <div class="prof-form-head">
+                           Uploaded Documents
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6" *ngIf="documents?.address_proof_file != null">
+                        <div class="form-group download-documents">
+                           <a [href]="file_link+'/'+documents.address_proof_file" target="_blank"><span class="arrow-down"><i class="fa fa-eye" aria-hidden="true"></i></span><span class="arrow-down-hovr"><i class="fa fa-eye blue-eeye" aria-hidden="true"></i></span>  Download Address Proof</a>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6" *ngIf="documents?.cancel_cheque_file != null">
+                        <div class="form-group download-documents">
+                           <a [href]="file_link+'/'+documents.cancel_cheque_file" target="_blank"><span class="arrow-down"><i class="fa fa-eye" aria-hidden="true"></i></span><span class="arrow-down-hovr"><i class="fa fa-eye blue-eeye" aria-hidden="true"></i></span>  Download Cancelled Cheque</a>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6" *ngIf="documents?.pan_card_file != null">
+                        <div class="form-group download-documents">
+                           <a [href]="file_link+'/'+documents.pan_card_file" target="_blank"><span class="arrow-down"><i class="fa fa-eye" aria-hidden="true"></i></span><span class="arrow-down-hovr"><i class="fa fa-eye blue-eeye" aria-hidden="true"></i></span>  Download PAN Card</a>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6"*ngIf="documents?.gst_certificate != null">
+                        <div class="form-group download-documents">
+                           <a [href]="file_link+'/'+documents.gst_certificate" target="_blank"><span class="arrow-down"><i class="fa fa-eye" aria-hidden="true"></i></span><span class="arrow-down-hovr"><i class="fa fa-eye blue-eeye" aria-hidden="true"></i></span>  Download GST Certificate</a>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6" *ngIf="documents?.itr_last_yr != null">
+                        <div class="form-group download-documents">
+                           <a [href]="file_link+'/'+documents.itr_last_yr" target="_blank"><span class="arrow-down"><i class="fa fa-eye" aria-hidden="true"></i></span><span class="arrow-down-hovr"><i class="fa fa-eye blue-eeye" aria-hidden="true"></i></span>  Download ITR of Last 2 FYS</a>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6" *ngIf="documents?.form_d != null">
+                        <div class="form-group download-documents">
+                           <a [href]="file_link+'/'+documents.form_d" target="_blank"><span class="arrow-down"><i class="fa fa-eye" aria-hidden="true"></i></span><span class="arrow-down-hovr"><i class="fa fa-eye blue-eeye" aria-hidden="true"></i></span>  Download Form D</a>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6" *ngIf="documents?.registration_certificate != null">
+                        <div class="form-group download-documents">
+                           <a [href]="file_link+'/'+documents.registration_certificate" target="_blank"><span class="arrow-down"><i class="fa fa-eye" aria-hidden="true"></i></span><span class="arrow-down-hovr"><i class="fa fa-eye blue-eeye" aria-hidden="true"></i></span>  Download Registration Certificates</a>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6" *ngIf="documents?.tcs != null">
+                        <div class="form-group download-documents">
+                           <a [href]="file_link+'/'+documents.tcs" target="_blank"><span class="arrow-down"><i class="fa fa-eye" aria-hidden="true"></i></span><span class="arrow-down-hovr"><i class="fa fa-eye blue-eeye" aria-hidden="true"></i></span>  Download TCS</a>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-6 col-sm-6" *ngIf="documents?.turnover_declare != null">
+                        <div class="form-group download-documents">
+                           <a [href]="file_link+'/'+documents.turnover_declare" target="_blank"><span class="arrow-down"><i class="fa fa-eye" aria-hidden="true"></i></span><span class="arrow-down-hovr"><i class="fa fa-eye blue-eeye" aria-hidden="true"></i></span>  Download Declaration on turnover
+                           section 1940 and 206 cc</a>
+                        </div>
+                     </div>
+                  </div>
+                  <hr>
+                  <!-- <div class="row">
+                     <div class="col-lg-12">
+                        <a href="#" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Submit</a>&nbsp;
+                        <button type="button" class="btn btn-danger"><i class="fa fa-times"></i> Cancel</button>
+                     </div>
+                  </div> -->
+               </div>
+            </div>
+         </section>
+      </div>
+      <app-footer></app-footer>
+   </body>
+</html>

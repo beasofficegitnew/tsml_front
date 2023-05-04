@@ -1,0 +1,110 @@
+<body>
+   <!-- Header -->
+   <app-header></app-header>
+   <div class="page-content">
+      <section class="prof-head">
+         <div class="container">
+            <h2>Customer Complaints</h2>
+         </div>
+      </section>
+      <section class="prof-form">
+         <div class="container">
+            <b class="mb-2" *ngIf="compInfo?.cus_po_no != null">Order Number - {{compInfo?.cus_po_no}}</b>
+            <div class="prof-form-bdy">
+               <div class="row" id="pdfTable" #pdfTable>
+                  <div class="col-lg-4 col-md-6 col-sm-6">
+                     <div class="form-group">
+                        <label for="">Categories</label>
+                        <select class="form-control" disabled>
+                           <option>{{compInfo?.com_cate_name}}</option>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-6">
+                     <div class="form-group">
+                        <label for="">Sub Categories</label>
+                        <select class="form-control" disabled>
+                           <option>{{compInfo?.com_sub_cate_name}}</option>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-4 mt-3">
+                     <div class="form-group text-right">
+                     <button class="btn btn-primary btn-sm" (click)="downloadAsPDF()">Export To PDF</button>
+                     </div>
+                   </div>
+                  <div class="col-12">
+                     <hr style="border: 1px solid;">
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12" *ngFor="let remarks of remarkAll">
+                     <ol class="chat">
+                        <li class="other" *ngIf="remarks?.customer_remarks != null">
+                           <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false" /></div>
+                           <div class="msg">
+                              <p>Customer Remarks!</p>
+                              <p>{{remarks.customer_remarks}}</p>
+                              <time>{{remarks.created_at}}</time>
+                           </div>
+                        </li>
+                        <li class="self" *ngIf="remarks?.kam_remarks != null">
+                           <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false" /></div>
+                           <div class="msg">
+                              <p>CAM's Remarks!</p>
+                              <p>{{remarks.kam_remarks}}</p>
+                              <time>{{remarks.created_at}}</time>
+                           </div>
+                        </li>
+                     </ol>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="showKamTextArea">
+                     <div class="form-group">
+                        <label for="">Customer Remarks</label>
+                        <textarea [(ngModel)]="remarkReply" #remarkRep="ngModel" class="form-control" rows="5"
+                           required></textarea>
+                        <small *ngIf="remarkRep.invalid && (remarkRep.dirty || remarkRep.touched || submitt)"
+                           class="inputValidation">Remarks is required</small>
+                     </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-6 mt-2 pointer ml-3" *ngIf="compInfo?.complain_status != 2">
+                     <div *ngIf="showKamTextArea">
+                        <input type="file" accept=".pdf" (change)="onSelectFile($event)" class="custom-file-input pointer" id="customFile" name="filename">
+                     <label class="custom-file-label" for="customFile">{{fileName ?
+                         fileName:'Upload Attachement'}}</label>
+                     </div>
+                     
+                  </div>
+                  <div class="col-lg-7 col-md-6 col-sm-6 ml-5" *ngIf="compInfo?.complain_status != 2">
+                     <div class="reply_btn_box">
+                        <div class="clos-btn">
+                           <div class="form-check">
+                              <input class="form-check-input" [checked]="closeChat" (change)="closeStatus($event)"
+                                 type="checkbox" value="" id="defaultCheck1">
+                              <label class="form-check-label" for="defaultCheck1">
+                                 Close
+                              </label>
+                           </div>
+                        </div>
+                        
+                        <div class="reply_btn" *ngIf="compInfo?.complain_status != 2"><button (click)="reply()" class="btn btn-primary btn-sm"><i
+                                 class="fa fa-reply"></i> Reply</button></div>
+                     </div>
+                  </div>
+               </div>
+               <hr>
+               <div class="row">
+                  <div class="col-lg-12">
+                     <button *ngIf="compInfo?.complain_status != 2" (click)="submitReply(compInfo?.complain_id)" class="btn btn-primary"><i
+                           class="fa fa-paper-plane"></i> Submit</button>&nbsp;
+                     <button type="button" routerLink="/complains/complaints-list" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Back</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+   </div>
+   <!-- Footer -->
+
+   <!-- <input class="textarea" type="text" placeholder="Type here!" /> -->
+ 
+   <app-footer></app-footer>
+</body>

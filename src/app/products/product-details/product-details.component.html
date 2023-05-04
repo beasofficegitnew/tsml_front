@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- haeder -->
+<app-header></app-header>
+
+<body>
+  <div class="page-content">
+    <section class="sub-header">
+      <h1>
+        Tata Indicrome – High Carbon Ferro Chrome 
+        Quality, Convenience, Trust - Unmatched.
+      </h1>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><span>/</span></li>
+        <li><a href="#">Products and Customers</a></li>
+        <li><span>/</span></li>
+        <li>Ferro Chrome</li>
+      </ul>
+    </section>
+    <section>
+      <div class="container">
+        <div class="prod-list-detl">
+          <!-- <div class="sec-pro-cat">
+            <span>Add item</span>
+            <select (change)="selectItems($event)" disabled class="form-control form-control-sm pointerTab">
+              <option value="">--select--</option>
+              <option value="{{cat.id}}" *ngFor="let cat of categori">{{cat.cat_name}}</option>
+            </select>
+          </div> -->
+          <!-- List start -->
+
+          <div class="demo">
+            <div id="accordion" class="accordion accordion--">
+              <div class="card mb-0" *ngFor="let productData of selectedItem; let i = index">
+                <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion"
+                  [attr.data-target]="'#collapseOne'+i" (click)="getCatNdProductId(productData.product_id, productData.cat_id)">
+                  <div class="acc-pro-pic">
+                    <img src="{{ productData?.primary_image_url }}" />
+                  </div>
+                  <div class="acc-pro-dec">
+                    <h3>{{ productData?.cat_name }}</h3>
+                    <p>
+                      Ranked among the top seven global chrome alloy producers, we are the leading manufacturer of 
+                      High Carbon Ferro Chrome in India. <br>
+                      We produce various grades of Ferro Chrome. <br>
+                      Typical Chemical Composition: Cr - 60% Min, C – 6 - 8%, Phos – 0.015-0.05% , S - 0.05–0.06%, Si – 3 - 4% <br>
+                      Typical Sizes Offered : 10-150 mm, 10-100 mm, 10-60 mm, 10-50 mm
+                    </p>
+                  </div>
+
+                  <div class="acc-pro-qty">
+                    <input type="text" class="form-control" id="qty_{{i}}" placeholder="0" disabled="" />
+                  </div>
+                </div>
+                
+                <div [attr.id]="'collapseOne'+i" class="card-body collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    <div class="row" *ngFor="let formData of productData['form_data'];let y = index">
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">Delivery Method</label>
+                          <select #dlvrMethodInput="ngModel" (change)="delectDlvryMethode($event, formData.schedule_no, i,y)" [(ngModel)]="formData.delivery"
+                            name="delivery_{{ formData.schedule_no }}" class="form-control form-control-sm" required>
+                            <option value="">Select ..</option>
+                            <option value="{{dlvry.methods}}" *ngFor="let dlvry of deliveryDropList">{{dlvry.methods}}</option>
+                          </select>
+                          <small *ngIf="dlvrMethodInput.invalid && (dlvrMethodInput.dirty || dlvrMethodInput.touched || submit)"
+                            class="inputValidation">Delivery methode is required</small>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">Pickup From</label>&nbsp;
+                          <label for="" (change)="selectPlant($event, formData.schedule_no)" >
+                            <input type="radio"  [(ngModel)]="formData.pickup_type" id="pickupTyp_{{ formData.schedule_no }}_a" name="contact{{ formData.schedule_no }}_a" value="PLANT" class="mr-1" />
+                            <label for="contactChoice1">Plant</label>&nbsp;
+                            <input type="radio" [(ngModel)]="formData.pickup_type" id="pickupTyp_{{ formData.schedule_no }}_b" name="contact{{ formData.schedule_no }}_b" value="DEPOT" class="mr-1"/>
+                            <label for="contactChoice2">Depot</label>&nbsp;
+                            <!-- <input type="radio" [(ngModel)]="formData.pickup_type" id="pickupTyp_{{ formData.schedule_no }}_c" name="contact{{ formData.schedule_no }}_c" value="PORT" class="mr-1"/>
+                            <label for="contactChoice3" id="picLable{{ formData.schedule_no }}">Port</label> -->
+                            <ng-container *ngIf="productData?.cat_name == 'Friable Chrome Ore'">
+                            <input type="radio" [(ngModel)]="formData.pickup_type" id="pickupTyp_{{ formData.schedule_no }}_c" name="contact{{ formData.schedule_no }}_c" value="MINES" class="mr-1"/>
+                            <label for="contactChoice3" id="picLable{{ formData.schedule_no }}">Mines</label>
+                            </ng-container>
+                          </label>
+
+                          <select #pickUpfrom="ngModel" id="pickup_from_{{formData.schedule_no}}" [(ngModel)]="formData.plant" (change)="plantSele($event, formData.schedule_no)"
+                            name="plant_{{ formData.schedule_no }}" class="form-control form-control-sm" required>
+                            <option selected *ngIf="plantSelectArr[formData.schedule_no] != null; else allPlant">{{plantSelectArr[formData.schedule_no]}}</option>
+                            <ng-template #allPlant>
+                              <option value="" selected>Select..</option>
+                              <option value="{{plantItem.name}}" *ngFor="let plantItem of plantAddrr">{{plantItem.name}}</option>
+                            </ng-template>
+                          </select>
+                          <small *ngIf="pickUpfrom.invalid && (pickUpfrom.dirty || pickUpfrom.touched || submit)"
+                            class="inputValidation">Pickup from is required</small>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">Location</label>
+                          <select id="loca_{{formData.schedule_no}}" class="form-control form-control-sm" #location="ngModel"
+                            [(ngModel)]="formData.location" name="location_{{ formData.schedule_no }}" required>
+                            <option selected value="{{locationState[formData.schedule_no]}}">{{locationState[formData.schedule_no]}}</option>
+                          </select>
+                          <small *ngIf="location.invalid && (location.dirty || location.touched || submit)"
+                            class="inputValidation">Location is required</small>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">Grades offered</label>
+                            <select #subCatInput="ngModel" (change)="subCatSelect($event)" [(ngModel)]="formData.sub_cat_id"
+                            name="subCat_{{ formData.schedule_no }}" class="form-control form-control-sm" required>
+                            <option value="" selected>Select..</option>
+                            <option value="{{subCat.id}}" *ngFor="let subCat of subCategory">{{subCat.sub_cat_name}}</option>
+                          </select>
+                          <small *ngIf="subCatInput.invalid && (subCatInput.dirty || subCatInput.touched || submit)"
+                            class="inputValidation">Grades offered is required</small>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">Sizes Offered</label>
+                          <select (change)="sizeOfferd($event)" #offerInput="ngModel" [(ngModel)]="formData.pro_size"
+                            name="pro_size_{{ formData.schedule_no }}" class="form-control form-control-sm" required>
+                            <option value="">Select ..</option>
+                            <option value="{{proSize}}" *ngFor="let proSize of prodcutSize">{{proSize}}</option>
+                          </select>
+                          <small *ngIf="offerInput.invalid && (offerInput.dirty || offerInput.touched || submit)"
+                            class="inputValidation">Offer size is required</small>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">Quantity (MT)</label>
+                          <input #qtyInput="ngModel" type="number" (change)="getTotalQuantity(i)"
+                            [(ngModel)]="formData.quantity" name="quantity_{{ formData.schedule_no }}"
+                            class="form-control form-control-sm" id="" placeholder="" value="formData.quantity"
+                            required />
+                          <small *ngIf="qtyInput.invalid && (qtyInput.dirty || qtyInput.touched || submit)"
+                            class="inputValidation">Quantity is required</small>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">Expected Price</label>
+                          <div class="pri-box">
+                            <span>₹</span>
+                            <input type="number" #priceInput="ngModel" [(ngModel)]="formData.expected_price"
+                              name="expected_price{{ formData.schedule_no }}" class="form-control form-control-sm" id=""
+                              placeholder="" value="" required />
+                            <!-- <small *ngIf="priceInput.invalid && (priceInput.dirty || priceInput.touched || submit)"
+                              class="inputValidation">Price is required</small> -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <div class="bil-add-new-add">
+                            <label for="">Bill To</label>
+                          </div>
+                          <select class="form-control form-control-sm" #billTo="ngModel" [(ngModel)]="formData.bill_to"
+                            name="bill_to_{{ formData.schedule_no }}" required>
+                            <option value="" disabled>--Bill to--</option>
+                            <option value="{{ biilToAdr.addr_id }}" *ngFor="let biilToAdr of billto" data-toggle="tooltip" data-placement="top"
+                            title="{{biilToAdr.addressone}} {{biilToAdr.addresstwo}} {{biilToAdr.city}}, Pincode - {{biilToAdr.pincode}}">{{ biilToAdr.city }}</option>
+                          </select>
+                          <small *ngIf="billTo.invalid && (billTo.dirty || billTo.touched || submit)"
+                            class="inputValidation">Select bill to</small>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <div class="bil-add-new-add">
+                            <label for="">Ship To</label>
+                          </div>
+                          <select class="form-control form-control-sm" #shipTo="ngModel" [(ngModel)]="formData.ship_to"
+                            name="ship_to_{{ formData.schedule_no }}" required>
+                            <option value="" disabled> --Ship to--</option>
+                            <option value="{{ shipToAdr.addr_id }}" *ngFor="let shipToAdr of shipto" data-toggle="tooltip" data-placement="top"
+                              title="{{shipToAdr.addressone}} {{shipToAdr.addresstwo}} {{shipToAdr.city}}, Pincode -{{shipToAdr.pincode}}">{{ shipToAdr.city }}</option>
+                          </select>
+                          <small *ngIf="shipTo.invalid && (shipTo.dirty || shipTo.touched || submit)"
+                            class="inputValidation">Select ship to</small>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">Proposed Delivery Date</label>
+                          <div class="date-rang">
+                            <div class="position-relative">
+                              <input type="date" [(ngModel)]="formData.from_date"
+                                (change)="setNxtData($event, formData.schedule_no)" min="{{date}}" #dlvrDate="ngModel"
+                                name="from_date_{{ formData.schedule_no }}" class="form-control form-control-sm"
+                                placeholder="From" required />
+                              <small *ngIf="dlvrDate.invalid && (dlvrDate.dirty || dlvrDate.touched || submit)"
+                                class="inputValidation">Delivery date from</small>
+                            
+                            </div>
+                            <div class="position-relative">
+                              <input type="date" [(ngModel)]="formData.to_date" #dlvrDateTo="ngModel"
+                                name="to_date_{{ formData.schedule_no }}" id="to_date_{{formData.schedule_no}}"
+                                class="form-control form-control-sm" placeholder="To" required />
+                              <small *ngIf="dlvrDateTo.invalid && (dlvrDateTo.dirty || dlvrDateTo.touched || submit)"
+                                class="inputValidation">Delivery date to</small>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Payment terms -->
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <div class="bil-add-new-add">
+                            <label for="">Payment Terms</label>
+                          </div>
+                          <input type="text" readonly placeholder ="Advance Payment" class="form-control form-control-sm"
+                          name="paymentsTerm_{{ formData.schedule_no }}" [(ngModel)]="formData.pay_term">
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <label for="">Customer remarks (Max. 500 characters)</label>
+                          <textarea [(ngModel)]="formData.remarks" MaxLength="500" #remarks="ngModel"
+                            name="remarks_{{ formData.schedule_no }}" class="form-control form-control-sm" rows="4"
+                            required></textarea>
+                          <small *ngIf="remarks.invalid && (remarks.dirty || remarks.touched || submit)"
+                            class="inputValidation">Remarks is required</small>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button" (click)="removeItem(i)" *ngIf="quotation.length > 1 && selectedItem.length != 0" class="red-plus-icon float-right" ><i class="fa fa-minus-circle"></i></button>
+                    <button type="button" (click)="addItem(i)" class="blue-plus-icon btn-copy float-right" ><i class="fa fa-plus-circle"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12" *ngIf="userByrole == 'C'">
+          <div class="form-group text-right rrfq-check">
+            <label class="container-check">I agree to the
+              <a href="assets/images/tsml_term_and_condition.pdf" target="blank"><u>terms and conditions</u></a>
+              <input type="checkbox" (change)="checkTerms($event)" [checked]="isTermCondition"/>
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 add-btn-sec pt-0 text-right">
+            <button type="button" [disabled]="!isTermCondition" *ngIf="userByrole == 'C'" (click)="ReqForQuatation()" class="btn btn-primary">Request for
+              quotation</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="page-content text-center mb-3" *ngIf="show_data == false && product_data == ''">
+    <b style="color: rgb(124, 121, 121);">No data found.</b>
+  </div>
+  <!-- footer -->
+  <app-footer></app-footer>
+
+</body>
+
+</html>

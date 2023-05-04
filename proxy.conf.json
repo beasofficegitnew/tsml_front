@@ -1,0 +1,6 @@
+{
+    "/api": {
+    "target": "https://beas.in/tsml-shop/api",
+    "secure": false
+    }
+    }

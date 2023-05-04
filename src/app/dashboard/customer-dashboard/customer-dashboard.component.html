@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<body>
+   <app-header></app-header>
+   <div class="page-content">
+      <section class="prof-head">
+         <div class="container">
+            <h2>Customer Dashboard -&nbsp;&nbsp;FY23</h2>
+         </div>
+      </section>
+
+      <section class="dashborad_sections">
+         <div class="container">
+            <div class="row ">
+
+               <div class="col-md-6 col-sm-6 col-lg-3 pointerTab">
+                  <a>
+                     <div class="mini-stat clearfix bx-shadow bg-info hvr-float-shadow">
+                        <span class="mini-stat-icon"><i class="fa fa-users" aria-hidden="true"></i></span>
+                        <div class="mini-stat-info text-right text-white">
+                           <!-- <span class="counter text-white">22</span> -->
+                           <span class="counter text-white">{{dashItem?.total_no_of_orders}}</span>
+                           <b>Total no of orders</b>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+
+               <div class="col-md-6 col-sm-6 col-lg-3 pointerTab">
+                  <a>
+                     <div class="mini-stat clearfix bx-shadow bg-pink hvr-float-shadow">
+                        <span class="mini-stat-icon"><i class="fa fa-archive" aria-hidden="true"></i></span>
+                        <div class="mini-stat-info text-right text-white">
+                           <!-- <span class="counter text-white">2</span> -->
+                           <span class="counter text-white">{{dashItem?.rfq_under_negotiation}}</span>
+                           <b> RFQ under negotiation</b>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+               <div class="col-md-6 col-sm-6 col-lg-3 pointerTab">
+                  <a>
+                     <div class="mini-stat clearfix bx-shadow bg-success1  hvr-float-shadow">
+                        <span class="mini-stat-icon"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                        <div class="mini-stat-info text-right text-white">
+                           <!-- <span class="counter text-white">3</span> -->
+                           <span class="counter text-white">{{dashItem?.orders_confirmed_pending_for_delivery}}</span>
+                           <b>Orders confirmed & pending for delivery</b>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+               <div class="col-md-6 col-sm-6 col-lg-3 pointerTab" routerLink="/complains/complaints-list">
+                  <a>
+                     <div class="mini-stat clearfix bx-shadow bg-pink  hvr-float-shadow">
+                        <span class="mini-stat-icon"><i class="fa fa-comments" aria-hidden="true"></i></span>
+                        <div class="mini-stat-info text-right text-white">
+                           <!-- <span class="counter text-white">4</span> -->
+                           <span class="counter text-white">{{dashItem?.Total_no_of_open_complaints}}</span>
+                           <b>Total no. of open complaints </b>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+
+               <div class="col-md-6 col-sm-6 col-lg-3 pointerTab" routerLink="/myaccount/view-profile">
+                  <a>
+                     <div class="mini-stat clearfix bx-shadow bg-warning1 hvr-float-shadow">
+                        <span class="mini-stat-icon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                        <div class="mini-stat-info text-right text-white">
+                           <span class="counter text-white"></span>
+                           <b>My Profile </b>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+
+            </div>
+
+            <div class="row">
+               <div class="col-md-6 col-lg-12 col-xl-6">
+                  <!-- RFQ list customer-->
+                  <div class="card">
+                     <div class="card-header">
+                        <h4>Recent enquiry {{statusRfq.rfq_submited}}</h4>
+                        <div class="col ml-5">
+                           <input type="text" placeholder="Search by rfq number" [(ngModel)]="searchValue"
+                              class="form-control">
+                        </div>
+                        <div class="input-group-append">
+                           <button class="btn btn-outline-secondary" (click)="seacrhByrfq()" type="button"><i
+                                 class="fa fa-search" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="input-group-append ml-1">
+                           <button class="btn btn-outline-secondary" (click)="getCustRfqItems()" type="button"><i
+                                 class="fa fa-refresh" aria-hidden="true"></i></button>
+                        </div>
+                     </div>
+
+                     <div class="card-body">
+                        <div class="support-ticket media pb-1 mb-3"
+                           *ngFor="let rfqItem of kamItems | paginate: { itemsPerPage: 8, currentPage: p }; let i = index">
+                           <div class="media-body">
+                              <div class="stepwizard col-md-offset-3 mb-2">
+                                 <div class="stepwizard-row setup-panel">
+                                    <div class="stepwizard-step">
+                                       <a type="button" [ngClass]="{'active':statusRfq[i]?.rfq_submited == 1}"
+                                          class="btn btn-default btn-circle css-tooltip-top color-blue meet-rvw uu0"><span>New
+                                             Enquiry</span></a>
+                                    </div>
+                                    <div class="stepwizard-step">
+                                       <a type="button" [ngClass]="{'active':statusRfq[i]?.quoted_by_tsml == 1}"
+                                          class="btn btn-default btn-circle css-tooltip-top color-blue meet-rvw uu0"><span>Quoted
+                                             By TSML</span></a>
+                                    </div>
+                                    <div class="stepwizard-step">
+                                       <a type="button" [ngClass]="{'active':statusRfq[i]?.under_negotiation == 1}"
+                                          class="btn btn-default btn-circle css-tooltip-top color-blue meet-rvw uu0"><span>Under
+                                             Negotiation</span></a>
+                                    </div>
+                                    <!-- <div class="stepwizard-step">
+                                       <a type="button" [ngClass]="{'active':statusRfq[i]?.final_quoted_by_tsml == 1}"
+                                          class="btn btn-default btn-circle css-tooltip-top color-blue meet-rvw uu0"><span>Material
+                                             Confirmed</span></a>
+                                    </div> -->
+                                    <div class="stepwizard-step">
+                                       <a type="button" [ngClass]="{'active':statusRfq[i]?.rfq_closed == 1}"
+                                          class="btn btn-default btn-circle css-tooltip-top color-blue meet-rvw uu0"><span>RFQ
+                                             Closed</span></a>
+                                    </div>
+
+                                    <div class="stepwizard-step">
+                                       <a type="button" [ngClass]="{'active':statusRfq[i]?.sc_created == 1}"
+                                          class="btn btn-default btn-circle css-tooltip-top color-blue meet-rvw uu0"><span>SC Created</span></a>
+                                    </div>
+                                    
+                                    <div class="stepwizard-step">
+                                       <a type="button" [ngClass]="{'active':statusRfq[i]?.so_created == 1}"
+                                          class="btn btn-default btn-circle css-tooltip-top color-blue meet-rvw uu0"><span>SO Created</span></a>
+                                    </div>
+                                    <div class="stepwizard-step">
+                                       <a type="button" [ngClass]="{'active':statusRfq[i]?.do_created == 1}"
+                                          class="btn btn-default btn-circle css-tooltip-top color-blue meet-rvw uu0"><span>Invoice Generated</span></a>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div class="badge badge-pill badge-warning mb-1 float-right"
+                                 *ngIf="rfqItem?.st_txt == 'New Enquiry'">{{rfqItem?.st_txt}}</div>
+
+                              <div class="badge badge-pill badge-info mb-1 float-right"
+                                 *ngIf="rfqItem?.st_txt == 'Quoted By TSML'">{{rfqItem?.st_txt}}</div>
+
+                              <div class="badge badge-pill badge-warning mb-1 float-right"
+                                 *ngIf="rfqItem?.st_txt == 'Under Negotiation'">{{rfqItem?.st_txt}}</div>
+
+                              <div class="badge badge-pill badge-success mb-1 float-right"
+                                 *ngIf="rfqItem?.st_txt == 'Material Confirmed'">{{rfqItem?.st_txt}}</div>
+
+                              <div class="badge badge-pill badge-success mb-1 float-right"
+                                 *ngIf="rfqItem?.st_txt == 'RFQ Closed'">{{rfqItem?.st_txt}}</div>
+                              
+                              <div class="badge badge-pill badge-success mb-1 float-right"
+                                 *ngIf="rfqItem?.st_txt == 'SO Created'">{{rfqItem?.st_txt}}</div>
+
+                              <div class="badge badge-pill badge-success mb-1 float-right"
+                                 *ngIf="rfqItem?.st_txt == 'SC Created'">{{rfqItem?.st_txt}}</div>
+
+                              <div class="badge badge-pill badge-success mb-1 float-right"
+                                 *ngIf="rfqItem?.st_txt == 'Invoice Generated'">{{rfqItem?.st_txt}}</div>
+
+                              <span class="font-weight-bold">RFQ
+                                 Number: <b class="text-primary pointerTab"
+                                    (click)="reedirectPage(rfqItem?.status, rfqItem?.rfq_no, rfqItem.kam_status)">{{rfqItem?.rfq_no}}</b></span>&nbsp;
+                              <small class="text-muted">
+                                 {{rfqItem?.created_at}}</small>
+
+                           </div>
+                        </div>
+                        <small class="text-primary pointerTab float-right" routerLink="/products/rfq-list">See
+                           more...</small><br>
+                        <div class="text-right">
+                           <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        </div>
+
+                     </div>
+                  </div>
+                  <!-- PO Listing -->
+               </div>
+               <div class="col-md-6 col-lg-12 col-xl-6">
+                  <div class="card">
+                     <div class="card-body">
+                        <div class="filter-box">
+                           <div class="card-header">
+                              <h4>Confirmed order list</h4>
+                              <div class="col ml-5">
+                                 <input type="text" placeholder="Order ref no / Cust po no" [(ngModel)]="searchPoValue"
+                                    class="form-control">
+                              </div>
+                              <div class="input-group-append">
+                                 <button class="btn btn-outline-secondary" (click)="poSearch()" type="button"><i
+                                       class="fa fa-search" aria-hidden="true"></i></button>
+                              </div>
+                              <div class="input-group-append ml-1">
+                                 <button class="btn btn-outline-secondary" (click)="getPoListing()" type="button"><i
+                                       class="fa fa-refresh" aria-hidden="true"></i></button>
+                              </div>
+                           </div>
+                            
+                        </div>
+                        <div class="table-responsive">
+                           <table class="table table-hover mb-0">
+                              <thead>
+                                 <tr>
+                                    <th>Order Ref No.</th>
+                                    <th>RFQ No.</th>
+                                    <th>Cust PO No.</th>
+                                    <th>Date</th>
+                                    <th>Quantity (MT)</th>
+                                    <th>Amend No</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr *ngFor="let po of poItems | paginate: { itemsPerPage: 10, currentPage: d, id: 'd' }" class="pointerTab">
+                                    <td>{{po.po_no}}</td>
+                                    <td>{{po.rfq_no}}</td>
+                                    <td>{{po.cus_po_no}}</td>
+                                    <td>{{po.po_date}}</td>
+                                    <td>{{po.quantity}}</td>
+                                    <td>{{po.amdnt_no}}</td>
+                                    <td *ngIf="po.status == 2">
+                                       <span class="badge badge-primary">{{po.status_txt}}</span>
+                                    </td>
+                                    <td *ngIf="po.status == 1">
+                                       <span class="badge badge-success">{{po.status_txt}}</span>
+                                    </td>
+                                    <td *ngIf="po.status == 3">
+                                       <span class="badge badge-danger">{{po.status_txt}}</span>
+                                    </td>
+                                    <td *ngIf="po.status == 4">
+                                       <span class="badge badge-warning">{{po.status_txt}}</span>
+                                    </td>
+                                    <td *ngIf="po.status == 6">
+                                       <span class="badge badge-success">{{po.status_txt}}</span>
+                                    </td>
+                                    <td *ngIf="po.status == 5">
+                                       <span class="badge badge-success">{{po.status_txt}}</span>
+                                    </td>
+                                    <td *ngIf="po.status == 7">
+                                       <span class="badge badge-success">{{po.status_txt}}</span>
+                                    </td>
+                                    <td *ngIf="po.status == 8">
+                                       <span class="badge badge-success">{{po.status_txt}}</span>
+                                    </td>
+                                    <td>
+                                       <div class="cell1 tab_head_sheet_1 ">
+                                          <div class="add_ttrr actions-main text-center">
+                                             <a class="css-tooltip-top color-blue meet-rvw uu0" (click)="redirectPo(po.po_no)"> <span>View Details</span>
+                                                <img src="assets/images/view-act-b.png" class="blue-show" alt="">
+                                             </a>
+
+                                             <a class="css-tooltip-top color-blue meet-rvw uu0" routerLink="/po/po-status/{{po.cus_po_no}}">
+                                                <span>View PO Status</span>
+                                                <img src="assets/images/delivery-truck.png" class="blue-show" alt="">
+                                             </a>
+
+                                          </div>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                           <small class="text-primary pointerTab float-right mt-3" routerLink="/po/po-list">See
+                              more...</small><br>
+                           </div>
+                     </div>
+                     <div class="text-right">
+                        <pagination-controls (pageChange)="d = $event" id="d"></pagination-controls>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+   </div>
+   <app-footer></app-footer>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<body>
+    <app-header></app-header>
+    <div class="page-content">
+       <section class="sub-header-2">
+          <div class="container">
+             <h1>PO List</h1>
+             <div class="clearfix"></div>
+          </div>
+       </section>
+       <section class="add-prod-pg">
+          <div class="container">
+             <div class="row">
+                <div class="col-lg-12 pb-5">
+                   <div class="cart-table">
+                      <div class="table-responsive">
+                         <table class="table">
+                            <thead>
+                               <tr>
+                                  <th>Order Reference Number</th>
+                                  <th>RFQ No</th>
+                                  <th>Customer PO number</th>
+                                  <th>Amendment No</th>
+                                  <th>PO Date</th>
+                                  <th>Customer Name</th>
+                                  <th>Total Order Quantity (MT)</th>
+                                  <th>Status</th>
+                                  <th></th>
+                               </tr>
+                            </thead>
+                            <tbody>
+                               <tr *ngFor="let po of poItems | paginate: { itemsPerPage: 12, currentPage: p }">
+                                  <td>
+                                    {{po.po_no}}
+                                  </td>
+                                  <td>{{po.rfq_no}}</td>
+                                  <td>
+                                    {{po.cus_po_no}}
+                                  </td>
+                                  <td>
+                                    {{po.amdnt_no}}
+                                  </td>
+                                  <td>
+                                    {{po.po_date}}
+                                  </td>
+                                  <td>
+                                    {{po.user}}
+                                  </td>
+                                  <td>
+                                    {{po.quantity}}
+                                  </td>
+                                  <td *ngIf="po.status == 2">
+                                    <span class="badge badge-primary">{{po.status_txt}}</span>
+                                 </td>
+                                 <td *ngIf="po.status == 4">
+                                    <span class="badge badge-warning">{{po.status_txt}}</span>
+                                 </td>
+                                 <td *ngIf="po.status == 1">
+                                    <span class="badge badge-success">{{po.status_txt}}</span>
+                                 </td>
+                                 <td *ngIf="po.status == 3">
+                                    <span class="badge badge-danger">{{po.status_txt}}</span>
+                                 </td>
+                                 <td *ngIf="po.status == 5">
+                                    <span class="badge badge-success">{{po.status_txt}}</span>
+                                 </td>
+                                 <td *ngIf="po.status == 6">
+                                    <span class="badge badge-success">{{po.status_txt}}</span>
+                                 </td>
+                                 <td *ngIf="po.status == 7">
+                                    <span class="badge badge-success">{{po.status_txt}}</span>
+                                 </td>
+                                 <td *ngIf="po.status == 8">
+                                    <span class="badge badge-success">{{po.status_txt}}</span>
+                                 </td>
+                                  <td>
+                                     <div class="btn-edt-del" style="justify-content: flex-start;">
+                                       <ng-container *ngIf="po.status == 2 || po.status == 3 || po.status == 4">
+                                          <a *ngIf="po.status != 1 && userType == false" class="edt-btn btn-primary classPointer" (click)="poEditPage(po.po_no)" data-toggle="tooltip" data-placement="top" title="Amendment PO"><i class="fa fa-pencil"></i></a>
+                                       </ng-container>
+                                       <a  class="edt-btn btn-primary2 classPointer" (click)="viewPoPage(po.po_no)" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye"></i></a>
+                                     </div>
+                                     
+                                  </td>
+                                  
+                               </tr>
+                            </tbody>
+                         </table>
+                         <div class="text-right">
+                           <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </section>
+    </div>
+    <app-footer></app-footer>
+ </body>

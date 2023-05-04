@@ -1,0 +1,23 @@
+.pointer {
+    cursor: pointer;
+}
+.custom-file-label {
+    height: 37px;
+    padding-top: 7px;
+}
+.form-control {
+    height: auto;
+}
+.custom-file-label {
+    height: auto;
+}
+.custom-file-download {
+    height: 37px;
+}
+.custom-file-label::after {
+    height: 37px;
+    content: "\f0ed";
+    font-family: 'FontAwesome';
+    color: #fff;
+    font-size: 20px;
+}
